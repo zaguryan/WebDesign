@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zac Guryan | Home</title>
+
+    <style>
+
+        /* ---------- Global Styles ---------- */
+
+        body{
+            margin:0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg,#2e8b57,#1e3c72);
+            color:white;
+            text-align:center;
+        }
+
+        /* ---------- Hero Section ---------- */
+
+        header{
+            padding:60px 20px;
+        }
+
+        h1{
+            font-size:60px;
+            color:orange;
+            transition: all .4s ease;
+        }
+
+        h1:hover{
+            color:violet;
+            transform: scale(1.05);
+        }
+
+        .subtitle{
+            font-size:22px;
+            margin-top:10px;
+            color:#e8e8e8;
+        }
+
+        /* ---------- Profile Image ---------- */
+
+        .profile-img{
+            margin-top:30px;
+            width:300px;
+            border-radius:15px;
+            box-shadow:0 10px 25px rgba(0,0,0,.4);
+            transition: transform .4s;
+        }
+
+        .profile-img:hover{
+            transform:scale(1.05);
+        }
+
+        /* ---------- Section Titles ---------- */
+
+        .section-title{
+            margin-top:60px;
+            font-size:36px;
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse{
+            from{transform:scale(1);}
+            to{transform:scale(1.08);}
+        }
+
+        /* ---------- Card Layout ---------- */
+
+        .container{
+            display:flex;
+            justify-content:center;
+            gap:30px;
+            flex-wrap:wrap;
+            padding:40px;
+        }
+
+        .card{
+            background:white;
+            color:#333;
+            padding:25px;
+            border-radius:12px;
+            width:220px;
+            box-shadow:0 10px 20px rgba(0,0,0,.3);
+            transition: all .3s;
+        }
+
+        .card:hover{
+            transform:translateY(-8px);
+            box-shadow:0 15px 30px rgba(0,0,0,.5);
+        }
+
+        /* ---------- Links ---------- */
+
+        .card a{
+            text-decoration:none;
+            color:#5b3df5;
+            font-weight:bold;
+        }
+
+        .card a:hover{
+            text-decoration:underline;
+        }
+
+        /* ---------- Footer ---------- */
+
+        footer{
+            margin-top:50px;
+            padding:20px;
+            font-size:14px;
+            opacity:.7;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Hello, I'm Zac Guryan</h1>
+
+    <p class="subtitle">
+        Student in Brooklyn • Learning Web Design
+    </p>
+
+
+    <img src="Photos/Photo on 2-12-26 at 2.35 PM.jpg" height="200" width="400"/>
+    <h2 class="section-title">My Website</h2>
+
+<div class="container">
+
+    <div class="card">
+        <h3>First Website</h3>
+        <p>My very first web page project.</p>
+        <a href="First/page.html">Enter →</a>
+    </div>
+
+    <div class="card">
+        <h3>Grilled Cheese Recipe</h3>
+        <p>A recipe page I built using HTML.</p>
+        <a href="Recipe.html">View Recipe →</a>
+    </div>
+
+    <div class="card">
+        <h3>Game of Thrones Grid</h3>
+        <p>A layout project based on the GOT universe.</p>
+        <a href="Grid/index.html">Explore →</a>
+    </div>
+
+    <div class="card">
+        <h3>Succession Grid</h3>
+        <p>Another grid layout inspired by Succession.</p>
+        <a href="Grid/index%202.html">Open →</a>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Zac Guryan | Web Design
+</footer>
+
+</body>
+</html>
