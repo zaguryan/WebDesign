@@ -3,60 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome to Zac's World</title>
+
+    <style>
+
+        body {
+            background-color: darkseagreen;
+            font-family: "Courier New", monospace;
+        }
+
+        h1 {
+            font-size: 40px;
+            color: orangered;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        h1:hover {
+            color: violet;
+            transform: scale(1.05);
+        }
+
+        h2 {
+            color: blueviolet;
+            text-align: left;
+            animation: growShrink 3s infinite alternate;
+        }
+
+        h3 {
+            color: deeppink;
+            text-align: left;
+        }
+
+        .other-pages {
+            color: navajowhite;
+        }
+
+        @keyframes growShrink {
+            from {
+                font-size: 20px;
+            }
+            to {
+                font-size: 40px;
+            }
+        }
+
+        img {
+            margin: 20px 0;
+        }
+
+        ul {
+            list-style-position: inside;
+            text-align: left;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        a {
+            text-align: left;
+        }
+
+    </style>
 </head>
-<body style="background-color: darkseagreen">
 
-<style>
-    h1{
-        font-size:40px;
-        color:orangered;
-        transition: all .4s ease;
-    }
+<body>
 
-    h1:hover{
-        color:violet;
-        transform: scale(1.05);
-    }
-</style>
+<h1>Hello, My Name Is Zac Guryan, I'm A Student In Brooklyn, Here's What I Look Like:</h1>
 
-<style>
+<img src="Photos/Photo on 2-12-26 at 2.35 PM.jpg" height="400" width="600"/>
+<h2>Web Design 2026</h2>
 
-h2 {
-text-align: left;
-animation: growShrink 3s infinite alternate;
-}
+<h3>This is my first website:</h3>
+<a href="First/page.html">Come Inside</a>
 
-@keyframes growShrink {
-from {
-font-size: 40px;
-}
-to {
-font-size: 60px; }
-}
-</style>
+<h3 class="other-pages">Other Pages:</h3>
 
-
-
- <h1 style="font-family: 'Courier New'; text-align: center";> Hello, My Name Is Zac Guryan, I'm A Student In Brooklyn, Here's What I look Like:> </h1>
-
-  <img src="Photos/Photo on 2-12-26 at 2.35 PM.jpg" alt="ph0t0 0f m3 height="300" width="450"/>
-<h2 style="color: blueviolet">Web Design 2026</h2>
-  <h3 style="color: deeppink">This is my first website:</h3>
-  <a href="First/page.html">Come Inside</a>
-<h3 style="color: navajowhite">Other Pages:</h3>
- <ul>
-<li><a href="Recipe.html">Recipe: Grilled Cheese!</a> </li>
- <br>
-<li><a href="Grid/index.html">Game of Thrones Universe Grid</a> </li>
-<br>
-<li><a href="Grid/index%202.html">Succession Grid</a> </li>
-     <br>
-     <li><a href="Chat%20GPT.html">Chat GPT Homepage</a></li>
- </ul>
-
+<ul>
+    <li><a href="Recipe.html">Recipe: Grilled Cheese!</a></li>
+    <li><a href="Grid/index.html">Game of Thrones Universe Grid</a></li>
+    <li><a href="Grid/index%202.html">Succession Grid</a></li>
+    <li><a href="Chat%20GPT.html">Chat GPT Homepage</a></li>
+</ul>
 
 </body>
-
-
-</style>
 </html>
