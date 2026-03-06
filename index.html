@@ -7,23 +7,39 @@
     <style>
 
         body{
-            background-color: darkseagreen;
-            font-family: "Courier New", monospace;
+            font-family:"Courier New", monospace;
+            background: linear-gradient(-45deg, #f8a782, #ff8f93, #5fcff3, #c9f8b9);
+            background-size: 400% 400%;
+            animation: sunsetSky 5s ease infinite;
+        }
+
+        /* animated sky colors */
+
+        @keyframes sunsetSky{
+            0%{
+                background-position:0% 50%;
+            }
+            50%{
+                background-position:100% 50%;
+            }
+            100%{
+                background-position:0% 50%;
+            }
         }
 
         h1{
-            font-size:40px;
+            font-size:30px;
             color:orangered;
             text-align:center;
             position:relative;
-            animation:headerSlide 6s ease-in-out infinite alternate;
+            animation:headerSlide 2s ease-in-out infinite alternate;
             transition:all .4s ease;
         }
 
         h1:hover{
-            color:blueviolet;
+            color:lightpink;
             text-shadow:0 0 10px violet,0 0 20px violet;
-            transform:scale(1.05);
+            transform:scale(1.08);
         }
 
         @keyframes headerSlide{
@@ -32,7 +48,7 @@
         }
 
         h2{
-            color:blueviolet;
+            color:black;
             animation:growShrink 3s infinite alternate, colorShift 6s infinite alternate;
         }
 
@@ -44,9 +60,9 @@
         /* COLOR ANIMATION FOR TEXT */
 
         @keyframes colorShift{
-            0%{color:blueviolet;}
-            50%{color:mediumorchid;}
-            100%{color:deeppink;}
+            0%{color: #000000;}
+            50%{color: #00c3ff;}
+            100%{color: #ffffff;}
         }
 
         h3{
@@ -59,7 +75,7 @@
         }
 
         .otherpages{
-            color:navajowhite;
+            color:lightslategrey;
         }
 
         /* image spacing */
