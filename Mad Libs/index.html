@@ -44,7 +44,15 @@
       border-radius:10px;
       box-shadow:0 4px 10px rgba(0,0,0,0.1);
       text-align:left;
-      text-decoration-color: white;
+
+      transform:scaleY(0);
+      transform-origin:top;
+      transition:transform 5s ease;
+    }
+
+    /* When the box opens */
+    #results.show{
+      transform:scaleY(1);
     }
 
     /* Input boxes */
@@ -56,13 +64,11 @@
       transition:0.25s;
     }
 
-    /* Hover grow effect */
     input:hover{
       transform:scale(1.1);
       background:#c7d7ff;
     }
 
-    /* Button styling */
     button{
       padding:10px 20px;
       margin-top:10px;
@@ -85,14 +91,16 @@
 
   </style>
 </head>
+
 <body>
+
 <h1>MadLibs</h1>
 
 <div id="entry">
   <h2>My test page</h2>
   <p>Name: <input type="text" id="name_input"></p>
   <p>Noun: <input type="text" id="noun1_input"></p>
-  <p>Noun: <input type="text" id=noun2_input></p>
+  <p>Noun: <input type="text" id="noun2_input"></p>
   <p>Adjective: <input type="text" id="adj1_input"></p>
   <p>Noun: <input type="text" id="noun3_input"></p>
   <p>Verb: <input type="text" id="verb1_input"></p>
@@ -101,50 +109,80 @@
   <p>Noun: <input type="text" id="noun4_input"></p>
   <p>Noun: <input type="text" id="noun5_input"></p>
   <button onclick="madlibs()">Submit</button>
-
 </div>
+
 <div id="results">
   <h2>Results</h2>
-  <p>Hello, my name is <span id="name_output">(Name)</span> and I love to eat apples. The other day, I was walking my <span id="noun1_output">(NOUN)</span> to the <span id="noun2_output">(NOUN).</span> But some <span id="adj1_output">(ADJECTIVE)</span> things happened to me. First, I encountered a <span id="noun3_output">(NOUN)</span> who <span id="verb1_output">(VERB)</span> me and ate my lunch money. Then I entered the building and the doorman <span id="verb2_output"> (VERB) </span> on my face. It was super <span id="adj2_output">(ADJECTIVE),</span> then I went to the <span id="noun4_output">(NOUN)</span> and checked a mirror. I realized that I had <span id="noun5_output">(NOUN)</span> scribbled on the back of my shirt.
+  <p>
+    Hello, my name is <span id="name_output">(Name)</span> and I love to eat apples.
+    The other day, I was walking my <span id="noun1_output">(NOUN)</span> to the
+    <span id="noun2_output">(NOUN)</span>.
+    But some <span id="adj1_output">(ADJECTIVE)</span> things happened to me.
+
+    First, I encountered a <span id="noun3_output">(NOUN)</span> who
+    <span id="verb1_output">(VERB)</span> me and ate my lunch money.
+
+    Then I entered the building and the doorman
+    <span id="verb2_output">(VERB)</span> on my face.
+
+    It was super <span id="adj2_output">(ADJECTIVE)</span>, then I went to the
+    <span id="noun4_output">(NOUN)</span> and checked a mirror.
+
+    I realized that I had <span id="noun5_output">(NOUN)</span>
+    scribbled on the back of my shirt.
   </p>
 </div>
-</body>
 
 <script>
+
   function madlibs() {
 
+    let inputs = document.querySelectorAll("#entry input");
+
+    // Check if any input is empty
+    for (let i = 0; i < inputs.length; i++) {
+      if (inputs[i].value.trim() === "") {
+        alert("Please fill out every box before submitting!");
+        return; // stop the function
+      }
+    }
+
     let name_input = document.getElementById("name_input");
-    document.getElementById("name_output").innerHTML = name_input.value
+    document.getElementById("name_output").innerHTML = name_input.value;
 
     let noun1_input = document.getElementById("noun1_input");
-    document.getElementById("noun1_output").innerHTML = noun1_input.value
+    document.getElementById("noun1_output").innerHTML = noun1_input.value;
 
     let noun2_input = document.getElementById("noun2_input");
-    document.getElementById("noun2_output").innerHTML = noun2_input.value
+    document.getElementById("noun2_output").innerHTML = noun2_input.value;
 
     let adj1_input = document.getElementById("adj1_input");
-    document.getElementById("adj1_output").innerHTML = adj1_input.value
+    document.getElementById("adj1_output").innerHTML = adj1_input.value;
 
     let noun3_input = document.getElementById("noun3_input");
-    document.getElementById("noun3_output").innerHTML = noun3_input.value
+    document.getElementById("noun3_output").innerHTML = noun3_input.value;
 
     let verb1_input = document.getElementById("verb1_input");
-    document.getElementById("verb1_output").innerHTML = verb1_input.value
+    document.getElementById("verb1_output").innerHTML = verb1_input.value;
 
     let verb2_input = document.getElementById("verb2_input");
-    document.getElementById("verb2_output").innerHTML = verb2_input.value
+    document.getElementById("verb2_output").innerHTML = verb2_input.value;
 
     let adj2_input = document.getElementById("adj2_input");
-    document.getElementById("adj2_output").innerHTML = adj2_input.value
+    document.getElementById("adj2_output").innerHTML = adj2_input.value;
 
     let noun4_input = document.getElementById("noun4_input");
-    document.getElementById("noun4_output").innerHTML = noun4_input.value
+    document.getElementById("noun4_output").innerHTML = noun4_input.value;
 
     let noun5_input = document.getElementById("noun5_input");
-    document.getElementById("noun5_output").innerHTML = noun5_input.value
+    document.getElementById("noun5_output").innerHTML = noun5_input.value;
 
+    /* Show the results box */
+    document.getElementById("results").classList.add("show");
 
   }
 
 </script>
+
+</body>
 </html>
