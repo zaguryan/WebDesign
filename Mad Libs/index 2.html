@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mad Libs</title>
+
+    <style>
+
+        body{
+            font-family: Arial, sans-serif;
+            background:#f4f6f8;
+            text-align:center;
+        }
+
+        /* Animated title */
+        h1{
+            font-size:50px;
+            margin-top:20px;
+            color:#333;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce{
+            0%{transform:translateY(0)}
+            50%{transform:translateY(-8px)}
+            100%{transform:translateY(0)}
+        }
+
+        /* Input section */
+        #entry{
+            background:white;
+            padding:20px;
+            width:400px;
+            margin:20px auto;
+            border-radius:10px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Results section */
+        #results{
+            background:white;
+            padding:20px;
+            width:600px;
+            margin:20px auto;
+            border-radius:10px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.1);
+            text-align:left;
+        }
+
+        /* Input boxes */
+        input{
+            background:#dfe9ff;
+            border:none;
+            padding:6px;
+            border-radius:6px;
+            transition:0.25s;
+        }
+
+        /* Hover grow effect */
+        input:hover{
+            transform:scale(1.1);
+            background:#c7d7ff;
+        }
+
+        /* Button styling */
+        button{
+            padding:10px 20px;
+            margin-top:10px;
+            border:none;
+            background:#4a7cff;
+            color:white;
+            border-radius:6px;
+            cursor:pointer;
+            transition:0.2s;
+        }
+
+        button:hover{
+            background:#345edb;
+        }
+
+        span{
+            font-weight:bold;
+            color:#4a7cff;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<h1>Mad Libs</h1>
+
+<div id="entry">
+    <h2>My test page</h2>
+
+    <p>NAME: <input type="text" id="name_input"></p>
+    <p>Noun: <input type="text" id="noun1"></p>
+    <p>Noun: <input type="text" id="noun2"></p>
+    <p>Adjective: <input type="text" id="adj1"></p>
+    <p>Noun: <input type="text" id="noun3"></p>
+    <p>Verb: <input type="text" id="verb1"></p>
+    <p>Verb: <input type="text" id="verb2"></p>
+    <p>Adjective: <input type="text" id="adj2"></p>
+    <p>Noun: <input type="text" id="noun4"></p>
+    <p>Noun: <input type="text" id="noun5"></p>
+
+    <button onclick="madlibs()">Submit</button>
+</div>
+
+<div id="results">
+    <h2>Results</h2>
+
+    <p>
+        Hello, my name is <span id="name_output">(NAME)</span> and I love to eat apples.
+        The other day, I was walking my <span id="noun1_output">(NOUN)</span> to the <span id="noun2_output">(NOUN)</span>.
+        But some <span id="adj1_output">(ADJECTIVE)</span> things happened to me.
+
+        First, I encountered a <span id="noun3_output">(NOUN)</span> who <span id="verb1_output">(VERB)</span> me and ate my lunch money.
+
+        Then I entered the building and the doorman <span id="verb2_output">(VERB)</span> on my face.
+
+        It was super <span id="adj2_output">(ADJECTIVE)</span>, then I went to the <span id="noun4_output">(NOUN)</span> and checked a mirror.
+
+        I realized that I had <span id="noun5_output">(NOUN)</span> scribbled on the back of my shirt.
+    </p>
+
+</div>
+
+<script>
+
+    function madlibs(){
+
+        document.getElementById("name_output").innerText =
+            document.getElementById("name_input").value;
+
+        document.getElementById("noun1_output").innerText =
+            document.getElementById("noun1").value;
+
+        document.getElementById("noun2_output").innerText =
+            document.getElementById("noun2").value;
+
+        document.getElementById("adj1_output").innerText =
+            document.getElementById("adj1").value;
+
+        document.getElementById("noun3_output").innerText =
+            document.getElementById("noun3").value;
+
+        document.getElementById("verb1_output").innerText =
+            document.getElementById("verb1").value;
+
+        document.getElementById("verb2_output").innerText =
+            document.getElementById("verb2").value;
+
+        document.getElementById("adj2_output").innerText =
+            document.getElementById("adj2").value;
+
+        document.getElementById("noun4_output").innerText =
+            document.getElementById("noun4").value;
+
+        document.getElementById("noun5_output").innerText =
+            document.getElementById("noun5").value;
+
+    }
+
+</script>
+
+</body>
+</html>
