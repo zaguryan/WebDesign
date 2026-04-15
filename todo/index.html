@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zac's To Do List</title>
+
+    <style>
+
+        body{
+            margin:0;
+            padding:20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(270deg, #cceeff, #ffe5cc);
+            background-size: 400% 400%;
+            animation: bgShift 10s ease infinite;
+        }
+
+        @keyframes bgShift{
+            0%{background-position:0% 50%;}
+            50%{background-position:100% 50%;}
+            100%{background-position:0% 50%;}
+        }
+
+        #container{
+            width:500px;
+        }
+
+        /* TITLE */
+        h1{
+            color:orangered;
+            margin-bottom:20px;
+        }
+
+        /* INPUT */
+        #inputRow{
+            display:flex;
+            gap:10px;
+            margin-bottom:20px;
+        }
+
+        input{
+            flex:1;
+            padding:10px;
+            font-size:16px;
+        }
+
+        button{
+            padding:10px;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        /* TASK LIST */
+        ul{
+            list-style:none;
+            padding:0;
+            margin:0;
+        }
+
+        /* TASK BOX */
+        li{
+            background:white;
+            padding:15px;
+            margin-bottom:12px;
+            border-radius:10px;
+            box-shadow:0 3px 8px rgba(0,0,0,0.15);
+
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        /* CHECKBOX */
+        li input[type="checkbox"]{
+            margin:0;
+            transform:scale(1.2);
+        }
+
+        /* TEXT */
+        li span{
+            flex:1; /* keeps text left and pushes delete button right */
+        }
+
+        /* COMPLETED */
+        li.completed{
+            opacity:0.6;
+            text-decoration:line-through;
+        }
+
+        /* DELETE BUTTON */
+        .deleteBtn{
+            display:none;
+            background:red;
+            color:white;
+            border:none;
+            padding:5px 8px;
+            border-radius:6px;
+            cursor:pointer;
+        }
+
+        /* SHOW DELETE WHEN DONE */
+        li.completed .deleteBtn{
+            display:inline-block;
+        }
+
+        /* PROGRESS BAR */
+        .progress-bar{
+            width:100%;
+            height:20px;
+            background:#ddd;
+            border-radius:10px;
+            margin-top:20px;
+        }
+
+        .progress{
+            height:100%;
+            width:0%;
+            background:green;
+            border-radius:10px;
+        }
+
+        /* MESSAGE */
+        #message{
+            margin-top:15px;
+            font-weight:bold;
+            color:purple;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="container">
+
+    <h1>Zac's To Do List</h1>
+
+    <div id="inputRow">
+        <input id="taskInput" placeholder="walk the fish">
+        <button onclick="addTask()">Add</button>
+    </div>
+
+    <ul id="taskList"></ul>
+
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <div id="message"></div>
+
+</div>
+
+<script>
+
+    /* COOKIE FUNCTIONS */
+
+    function setCookie(name,value,days){
+        let expires = "";
+        if(days){
+            let date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    function getCookie(name){
+        let nameEQ = name + "=";
+        let ca = document.cookie.split(';');
+        for(let i=0;i<ca.length;i++){
+            let c = ca[i];
+            while(c.charAt(0)==' ') c = c.substring(1,c.length);
+            if(c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+
+
+    /* INPUT */
+
+    let input = document.getElementById("taskInput");
+
+
+    /* ENTER KEY */
+
+    input.addEventListener("keydown", function(e){
+        if(e.key === "Enter"){
+            addTask();
+        }
+    });
+
+
+    /* ADD TASK */
+
+    function addTask(){
+
+        let text = input.value.trim();
+        if(text === "") return;
+
+        createTask(text,false);
+
+        saveTasks();
+
+        input.value = "";
+        input.focus();
+
+        updateProgress();
+    }
+
+
+    /* CREATE TASK */
+
+    function createTask(text, completed){
+
+        let li = document.createElement("li");
+
+        let checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = completed;
+
+        let span = document.createElement("span");
+        span.textContent = text;
+
+        let deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.className = "deleteBtn";
+
+        deleteBtn.onclick = function(){
+            li.remove();
+            saveTasks();
+            updateProgress();
+        };
+
+        checkbox.addEventListener("change", function(){
+
+            if(checkbox.checked){
+                li.classList.add("completed");
+            } else {
+                li.classList.remove("completed");
+            }
+
+            saveTasks();
+            updateProgress();
+
+        });
+
+        if(completed){
+            li.classList.add("completed");
+        }
+
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
+
+        document.getElementById("taskList").appendChild(li);
+    }
+
+
+    /* SAVE TASKS TO COOKIE */
+
+    function saveTasks(){
+
+        let tasks = [];
+
+        document.querySelectorAll("#taskList li").forEach(li => {
+
+            let text = li.querySelector("span").textContent;
+            let completed = li.classList.contains("completed");
+
+            tasks.push({
+                text: text,
+                completed: completed
+            });
+
+        });
+
+        setCookie("zacTasks", JSON.stringify(tasks), 7);
+    }
+
+
+    /* LOAD TASKS FROM COOKIE */
+
+    function loadTasks(){
+
+        let saved = getCookie("zacTasks");
+
+        if(!saved) return;
+
+        let tasks = JSON.parse(saved);
+
+        tasks.forEach(task => {
+            createTask(task.text, task.completed);
+        });
+
+    }
+
+
+    /* PROGRESS */
+
+    function updateProgress(){
+
+        let tasks = document.querySelectorAll("#taskList li");
+        let completed = document.querySelectorAll("#taskList li.completed");
+
+        let percent = tasks.length ? (completed.length / tasks.length) * 100 : 0;
+
+        document.getElementById("progress").style.width = percent + "%";
+
+    }
+
+
+    /* LOAD ON START */
+
+    window.onload = function(){
+        loadTasks();
+        updateProgress();
+    };
+
+</script>
+
+</body>
+</html>
