@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Custom Countdown</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: 'EB Garamond', serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+
+            background: linear-gradient(-45deg, #fffab5, #ffbe74, #ff8b00, #ffa24f);
+            background-size: 400% 400%;
+            animation: gradientMove 12s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255,255,255,0.08);
+            padding: 50px;
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 40px rgba(0,0,0,0.2);
+            animation: fadeIn 1.5s ease;
+        }
+
+        input {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #b31b1b;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #f0f0f0;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+
+        #countdown {
+            font-size: 2rem;
+            margin-top: 20px;
+            font-weight: 600;
+            animation: fadeText 3s ease infinite alternate;
+        }
+
+        @keyframes fadeText {
+            from { opacity: 0.7; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .hidden {
+            display: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Input Form -->
+    <div id="form">
+        <h1>Create Your Countdown</h1>
+        <input type="text" id="eventName" placeholder="Event name (e.g. My Birthday)">
+        <br>
+        <input type="date" id="eventDate">
+        <br>
+        <button onclick="startCountdown()">Start Countdown</button>
+    </div>
+
+    <!-- Countdown Display -->
+    <div id="display" class="hidden">
+        <h1 id="title"></h1>
+        <div id="countdown"></div>
+    </div>
+
+</div>
+
+<script>
+
+    let countdownInterval;
+
+    function startCountdown() {
+
+        const name = document.getElementById("eventName").value;
+        const date = document.getElementById("eventDate").value;
+
+        if (!name || !date) {
+            alert("Please fill out both fields!");
+            return;
+        }
+
+        document.getElementById("form").classList.add("hidden");
+        document.getElementById("display").classList.remove("hidden");
+
+        document.getElementById("title").innerText = name;
+
+        const targetDate = new Date(date + "T00:00:00").getTime();
+
+        countdownInterval = setInterval(function() {
+
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML =
+                days + " days • " +
+                hours + " hours • " +
+                minutes + " minutes • " +
+                seconds + " seconds";
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("countdown").innerHTML = "🎉 It's here!";
+            }
+
+        }, 1000);
+    }
+
+</script>
+
+</body>
+</html>
