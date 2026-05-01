@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MyTeam Cipher 2K 🔐🏀</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at top, #0f0c29, #302b63, #24243e);
+            color: white;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+            text-shadow: 0 0 15px cyan;
+        }
+
+        textarea {
+            width: 80%;
+            height: 100px;
+            border-radius: 10px;
+            border: none;
+            padding: 10px;
+            margin: 10px;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            background: cyan;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        #output {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        .xp {
+            color: gold;
+            margin-top: 10px;
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            width: 90%;
+            margin: 20px auto;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid rgba(0,255,255,0.2);
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px cyan;
+        }
+
+        .selected {
+            border: 2px solid yellow;
+            box-shadow: 0 0 20px yellow;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>MyTeam Cipher 2K 🔐🏀</h1>
+
+<div class="xp" id="xp">XP: 0</div>
+
+<textarea id="text" placeholder="Enter message..."></textarea><br>
+
+<button onclick="encrypt()">Encrypt</button>
+<button onclick="decrypt()">Decrypt</button>
+
+<div id="output"></div>
+
+<h3>Select Player (Shift Value)</h3>
+
+<div class="grid" id="grid"></div>
+
+<script>
+
+    let xp = 0;
+    let shift = 0;
+
+    /* SIMPLE SOUND */
+    function sound(){
+        let ctx = new (window.AudioContext || window.webkitAudioContext)();
+        let osc = ctx.createOscillator();
+        let gain = ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.frequency.value = 600;
+        osc.start();
+
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+        osc.stop(ctx.currentTime + 0.2);
+    }
+
+    /* 0–23 UNIQUE PLAYERS */
+    const players = [
+        {name:"Westbrook",num:0},{name:"McGrady",num:1},{name:"Leonard",num:2},
+        {name:"Iverson",num:3},{name:"Webber",num:4},{name:"Garnett",num:5},
+        {name:"LeBron",num:6},{name:"Carmelo",num:7},{name:"Kobe",num:8},
+        {name:"Parker",num:9},{name:"Rodman",num:10},{name:"Irving",num:11},
+        {name:"Stockton",num:12},{name:"Harden",num:13},{name:"Brunson",num:14},
+        {name:"Jokic",num:15},{name:"Randle",num:16},{name:"Barrett",num:17},
+        {name:"Quickley",num:18},{name:"Robinson",num:19},{name:"Anunoby",num:20},
+        {name:"Guryan",num:21},{name:"Daniel",num:22},{name:"Jordan",num:23}
+    ];
+
+    /* BUILD GRID */
+    const grid = document.getElementById("grid");
+
+    players.forEach(p=>{
+        let div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+        ${p.name}<br>
+        #${p.num}
+    `;
+
+        div.onclick = ()=>{
+
+            shift = p.num;
+
+            document.querySelectorAll(".card").forEach(c=>{
+                c.classList.remove("selected");
+            });
+
+            div.classList.add("selected");
+
+            sound();
+        };
+
+        grid.appendChild(div);
+    });
+
+    /* CAESAR CIPHER */
+    function cipher(text, shiftVal){
+        let out = "";
+
+        for(let c of text){
+            if(c.match(/[a-z]/i)){
+                let code = c.charCodeAt(0);
+                let base = code>=65 && code<=90 ? 65 : 97;
+
+                out += String.fromCharCode(
+                    ((code-base+shiftVal+26)%26)+base
+                );
+            } else {
+                out += c;
+            }
+        }
+
+        return out;
+    }
+
+    /* ENCRYPT */
+    function encrypt(){
+        let t = document.getElementById("text").value;
+        document.getElementById("output").innerHTML =
+            "Encrypted: " + cipher(t, shift);
+
+        xp++;
+        document.getElementById("xp").innerHTML = "XP: " + xp;
+
+        sound();
+    }
+
+    /* DECRYPT */
+    function decrypt(){
+        let t = document.getElementById("text").value;
+        document.getElementById("output").innerHTML =
+            "Decrypted: " + cipher(t, -shift);
+
+        xp++;
+        document.getElementById("xp").innerHTML = "XP: " + xp;
+
+        sound();
+    }
+
+</script>
+
+</body>
+</html>
