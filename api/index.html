@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizza Gallery</title>
+</head>
+
+<body>
+
+<h2>Pizza Image Viewer</h2>
+
+<select id="pizzaSelect" onchange="loadPizza()">
+    <option value="">Select a Pizza</option>
+    <option value="pepperoni pizza">Pepperoni</option>
+    <option value="margherita pizza">Margherita</option>
+    <option value="veggie pizza">Vegetable</option>
+    <option value="bbq chicken pizza">BBQ Chicken</option>
+</select>
+
+<br><br>
+
+<img id="pizzaImage" width="500">
+
+<script>
+
+    function loadPizza() {
+
+        let choice = document.getElementById("pizzaSelect").value;
+
+        if (choice === "") {
+            document.getElementById("pizzaImage").src = "";
+            return;
+        }
+
+        let url = "https://source.unsplash.com/800x600/?" + choice;
+
+        document.getElementById("pizzaImage").src = url;
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zac's Word Hunt</title>
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; font-family:Arial,sans-serif; color:#18351f;
+      display:flex; justify-content:center; align-items:center; padding:24px;
+      background:
+              radial-gradient(circle at 82% 24%, #fff 0 8px, transparent 9px),
+              repeating-linear-gradient(100deg, rgba(61,148,78,.22) 0 42px, rgba(255,255,255,.1) 42px 84px),
+              linear-gradient(#9dd8ff 0 35%, #cdeeb3 35% 47%, #6dbb67 47% 100%);
+    }
+    .game{
+      width:min(980px,100%); text-align:center; background:rgba(255,255,255,.85);
+      border:2px solid rgba(39,118,62,.25); border-radius:8px;
+      box-shadow:0 18px 45px rgba(31,82,38,.22); padding:22px;
+    }
+    h1{margin:0; font-size:clamp(1.7rem,5vw,3.2rem); color:#174d29}
+    .subtitle{margin:8px 0 16px; font-weight:bold; color:#4d6b37}
+    .top-row{display:grid; grid-template-columns:1fr 150px; gap:12px; margin-bottom:16px; text-align:left}
+    .hint-box,.score-box{border:2px solid #b8d978; background:#f8ffe7; border-radius:8px; padding:12px}
+    .hint-label,.score-label{display:block; color:#55742b; font-size:.8rem; font-weight:bold; text-transform:uppercase}
+    .hint-text,#score{display:block; margin-top:4px; color:#174d29; font-size:1.05rem; font-weight:bold}
+    .board{
+      width:min(100%,675px); margin:0 auto 18px; display:grid;
+      grid-template-columns:repeat(15,1fr); gap:4px; padding:6px;
+      background:rgba(33,99,44,.18); border:4px solid #3f8c4c; border-radius:8px;
+    }
+    .tile{
+      aspect-ratio:1; border:1px solid #aac36b; border-radius:5px; background:#fffdf0;
+      color:#284c24; display:flex; justify-content:center; align-items:center;
+      font-size:clamp(.78rem,3.2vw,1.45rem); font-weight:bold;
+    }
+    .tile.found{background:#33a852; color:white; border-color:#23783b; transform:scale(.96)}
+    .controls{display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:12px}
+    input{width:min(360px,100%); padding:12px; border:2px solid #8bb65f; border-radius:8px; font-size:1.05rem}
+    button{padding:12px 16px; border:0; border-radius:8px; background:#f2c94c; font-weight:bold; cursor:pointer}
+    .secondary-button{background:#dcefc2; color:#23542d}
+    #message{min-height:24px; margin:0 0 14px; color:#174d29; font-weight:bold}
+    .found-area{text-align:left; border-top:1px solid rgba(62,116,48,.25); padding-top:12px}
+    .found-area h2{margin:0 0 8px; color:#174d29; font-size:1.05rem}
+    #foundList{display:flex; flex-wrap:wrap; gap:8px; min-height:36px; margin:0; padding:0; list-style:none}
+    #foundList li{background:#33a852; color:white; border-radius:999px; padding:8px 12px; font-weight:bold}
+    .empty{color:#66825b; font-style:italic}
+    @media(max-width:700px){body{align-items:flex-start;padding:12px}.top-row{grid-template-columns:1fr}.board{gap:2px;padding:4px}}
+  </style>
+</head>
+<body>
+<div class="game">
+  <h1>Zac's Word Hunt</h1>
+  <p class="subtitle">Type hidden golf words to light up the course.</p>
+
+  <div class="top-row">
+    <div class="hint-box">
+      <span class="hint-label">Hint</span>
+      <span class="hint-text">Zac's favorite Sunday activity</span>
+    </div>
+    <div class="score-box">
+      <span class="score-label">Found</span>
+      <span id="score">0 / 15</span>
+    </div>
+  </div>
+
+  <div class="board" id="board"></div>
+
+  <div class="controls">
+    <input id="guess" placeholder="Type a golf word" autocomplete="off">
+    <button onclick="checkWord()">Enter</button>
+    <button class="secondary-button" onclick="resetGame()">Reset</button>
+  </div>
+
+  <p id="message">Find 15 golf words. They can go forward, backward, up, down, or diagonal.</p>
+
+  <div class="found-area">
+    <h2>Found Words</h2>
+    <ul id="foundList"><li class="empty">No words found yet</li></ul>
+  </div>
+</div>
+
+<script>
+  const letters = [
+    "A","Z","C","E","G","O","L","E","A","G","L","E","F","N","Z",
+    "A","C","R","S","U","N","D","A","T","Y","L","I","N","I","K",
+    "B","O","G","E","Y","S","R","C","E","O","U","G","H","P","H",
+    "F","A","Z","A","R","D","Y","A","E","P","I","N","S","S","W",
+    "I","N","D","G","C","A","O","D","B","U","R","E","S","K","E",
+    "H","O","L","R","W","E","C","D","O","U","N","I","P","C","G",
+    "S","F","L","R","I","A","G","I","X","A","W","D","E","A","R",
+    "D","A","I","G","E","V","I","E","G","R","O","R","N","B","E",
+    "A","A","N","Z","C","G","E","I","O","R","L","I","F","Z","E",
+    "F","A","C","D","S","U","L","R","N","D","O","B","A","Y","N",
+    "L","I","N","K","T","L","S","R","O","U","G","U","H","H","A",
+    "Z","A","R","D","U","R","P","U","T","T","E","R","G","P","I",
+    "N","S","W","M","I","N","A","G","C","O","U","R","S","H","E",
+    "H","O","L","E","C","U","P","P","F","L","A","G","W","E","D",
+    "G","E","S","U","O","H","B","U","L","C","E","I","R","O","N"
+  ];
+
+  const correctWords = {
+    CLUBHOUSE:[219,218,217,216,215,214,213,212,211],
+    MULLIGAN:[183,169,155,141,127,113,99,85],
+    SANDTRAP:[90,106,122,138,154,170,186,202],
+    BACKSPIN:[118,103,88,73,58,43,28,13],
+    FAIRWAY:[135,121,107,93,79,65,51],
+    BIRDIE:[146,131,116,101,86,71],
+    PUTTER:[171,172,173,174,175,176],
+    DRIVER:[62,78,94,110,126,142],
+    CADDIE:[37,52,67,82,97,112],
+    TEEBOX:[23,38,53,68,83,98],
+    BOGEY:[30,31,32,33,34],
+    EAGLE:[7,8,9,10,11],
+    GREEN:[89,104,119,134,149],
+    ROUGH:[129,145,161,177,193],
+    FORE:[45,31,17,3]
+  };
+
+  const board = document.getElementById("board");
+  const input = document.getElementById("guess");
+  const message = document.getElementById("message");
+  const score = document.getElementById("score");
+  const foundList = document.getElementById("foundList");
+  const foundWords = [];
+
+  letters.forEach(function(letter, index){
+    const tile = document.createElement("div");
+    tile.className = "tile";
+    tile.textContent = letter;
+    tile.id = "tile-" + index;
+    board.appendChild(tile);
+  });
+
+  input.addEventListener("keydown", function(event){
+    if(event.key === "Enter"){ checkWord(); }
+  });
+
+  function checkWord(){
+    const word = input.value.toUpperCase().trim().replaceAll(" ","");
+
+    if(word === ""){
+      message.textContent = "Type a guess first.";
+      return;
+    }
+
+    if(foundWords.includes(word)){
+      message.textContent = word + " is already on your scorecard.";
+      input.value = "";
+      return;
+    }
+
+    if(correctWords[word]){
+      foundWords.push(word);
+      correctWords[word].forEach(function(tileNumber){
+        document.getElementById("tile-" + tileNumber).classList.add("found");
+      });
+
+      if(foundWords.length === 1){ foundList.innerHTML = ""; }
+
+      const item = document.createElement("li");
+      item.textContent = word;
+      foundList.appendChild(item);
+
+      score.textContent = foundWords.length + " / " + Object.keys(correctWords).length;
+      message.textContent = "Nice shot! You found " + word + ".";
+
+      if(foundWords.length === Object.keys(correctWords).length){
+        message.textContent = "You found every word. Sunday golf victory!";
+      }
+    } else {
+      message.textContent = "No match for " + word + ". Try another golf word.";
+    }
+
+    input.value = "";
+    input.focus();
+  }
+
+  function resetGame(){
+    foundWords.length = 0;
+    score.textContent = "0 / " + Object.keys(correctWords).length;
+    message.textContent = "Find 15 golf words. They can go forward, backward, up, down, or diagonal.";
+    foundList.innerHTML = '<li class="empty">No words found yet</li>';
+    input.value = "";
+
+    document.querySelectorAll(".tile").forEach(function(tile){
+      tile.classList.remove("found");
+    });
+
+    input.focus();
+  }
+</script>
+</body>
+</html>
